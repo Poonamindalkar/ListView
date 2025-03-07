@@ -6,7 +6,10 @@ import {
   IconButton,
   Dropdown,
 } from "@fluentui/react";
+import { initializeIcons } from "@fluentui/react/lib/Icons";
 import { mergeStyleSets } from "@fluentui/react/lib/Styling";
+
+initializeIcons(); // Ensure Fluent UI icons are available
 
 const styles = mergeStyleSets({
   taskItem: {
@@ -14,6 +17,7 @@ const styles = mergeStyleSets({
     alignItems: "center",
     padding: "8px 16px",
     borderBottom: "1px solid #eee",
+    gap: "12px",
   },
   taskTitle: {
     flexGrow: 1,
@@ -22,12 +26,20 @@ const styles = mergeStyleSets({
     display: "flex",
     alignItems: "center",
     gap: "6px",
+    minWidth: "140px",
   },
   statusLabel: {
     borderRadius: "4px",
     padding: "4px 8px",
     minWidth: "100px",
     textAlign: "center",
+  },
+  editButton: {
+    visibility: "visible",
+    opacity: 1,
+    background: "transparent",
+    padding: "4px",
+    color: "#0078D4",
   },
   assigneeLabel: {
     marginRight: "8px",
@@ -58,12 +70,30 @@ const categoryColors = {
 const TaskItem = ({ task, handleDeleteTask, handleStatusChange }) => {
   const [isEditingStatus, setIsEditingStatus] = useState(false);
 
-  const handleEditStatusClick = () => setIsEditingStatus(!isEditingStatus);
+  const handleEditStatusClick = (e) => {
+    e.stopPropagation(); // Prevent event bubbling
+    setIsEditingStatus(true);
+  };
 
   const handleStatusDropdownChange = (event, item) => {
     handleStatusChange(task.id, item.key);
     setIsEditingStatus(false);
   };
+
+  const handleClickOutside = (event) => {
+    if (!event.target.closest(".statusContainer")) {
+      setIsEditingStatus(false);
+    }
+  };
+
+  React.useEffect(() => {
+    if (isEditingStatus) {
+      document.addEventListener("click", handleClickOutside);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [isEditingStatus]);
 
   const statusOptions = [
     { key: "To Do", text: "To Do" },
@@ -76,8 +106,8 @@ const TaskItem = ({ task, handleDeleteTask, handleStatusChange }) => {
       <Checkbox />
       <Text className={styles.taskTitle}>{task.title}</Text>
 
-      {/* Status with Edit Dropdown */}
-      <div className={styles.statusContainer}>
+      {/* Status Label with Edit Button */}
+      <div className={`statusContainer ${styles.statusContainer}`}>
         {isEditingStatus ? (
           <Dropdown
             selectedKey={task.status}
@@ -87,14 +117,21 @@ const TaskItem = ({ task, handleDeleteTask, handleStatusChange }) => {
             styles={{ dropdown: { minWidth: 120 } }}
           />
         ) : (
-          <Label
-            className={styles.statusLabel}
-            style={{ backgroundColor: statusColors[task.status] }}
-          >
-            {task.status}
-          </Label>
+          <>
+            <Label
+              className={styles.statusLabel}
+              style={{ backgroundColor: statusColors[task.status] }}
+            >
+              {task.status}
+            </Label>
+            <IconButton
+              iconProps={{ iconName: "Edit" }}
+              onClick={handleEditStatusClick}
+              title="Edit Status"
+              styles={{ root: styles.editButton }}
+            />
+          </>
         )}
-        <IconButton iconProps={{ iconName: "Edit" }} onClick={handleEditStatusClick} />
       </div>
 
       <Label className={styles.assigneeLabel}>{task.assignee}</Label>
