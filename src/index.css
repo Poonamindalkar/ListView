@@ -117,3 +117,24 @@ button:focus-visible {
   right: 0;      /* Position on the right edge */
   transform: translateY(-50%); /* Adjust vertical position for perfect centering */
 }
+/* ... your existing CSS ... */
+
+button.add-users-button { /* Assuming you add a class "add-users-button" to the button */
+  background-color: #007bff; /* Example blue color */
+  color: white; /* Adjust text color if needed */
+}
+.clear-filter-button {
+  background-color: #f8f9fa; /* Light background color similar to the dropdown */
+  border: 1px solid #ced4da; /* Border color */
+  padding: 8px 12px; /* Adjust padding as needed */
+  font-size: 14px; /* Adjust font size as needed */
+  font-weight: 400; /* Adjust font weight as needed */
+  color: #495057; /* Adjust text color as needed */
+  border-radius: 4px; /* Rounded corners */
+  cursor: pointer; /* Add pointer cursor */
+  transition: background-color 0.2s ease; /* Add transition effect */
+}
+
+.clear-filter-button:hover {
+  background-color: #e9ecef; /* Slightly darker background on hover */
+}

@@ -33,7 +33,7 @@ const SearchAndGroup = ({
       />
 
       {/* Add User Button */}
-      <DefaultButton text="Add User" onClick={handleCreateUser} />
+      <DefaultButton className="add-users-button" text="Add User" onClick={handleCreateUser} />
 
       {/* Group By Dropdown */}
       <div className="group-by-dropdown">
@@ -76,7 +76,7 @@ const SearchAndGroup = ({
       {activeFilter && (
         <div style={{ marginLeft: "10px" }}>
           <span>Filter: {activeFilter}</span>
-          <DefaultButton text="Clear Filter" onClick={clearFilter} styles={{ root: { marginLeft: "5px" } }} />
+          <DefaultButton className="clear-filter-button" text="Clear Filter" onClick={clearFilter} styles={{ root: { marginLeft: "5px" } }} />
         </div>
       )}
     </div>
