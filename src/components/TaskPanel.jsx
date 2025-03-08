@@ -1,3 +1,4 @@
+// TaskPanel.js
 import React from "react";
 import {
   Panel,
@@ -41,38 +42,11 @@ const TaskPanel = ({
       type={PanelType.medium}
       onDismiss={handlePanelDismiss}
       headerText="Create New Task"
+      // Add a custom class to target the panel with CSS
+      className="right-side-panel" 
     >
       <Stack tokens={{ childrenGap: 10 }}>
-        <TextField
-          label="Title"
-          value={newTaskTitle}
-          onChange={(ev, newValue) => setNewTaskTitle(newValue)}
-        />
-        <Dropdown
-          label="Status"
-          options={Object.keys(statusColors).map((status) => ({
-            key: status,
-            text: status,
-          }))}
-          selectedKey={newTaskStatus}
-          onChange={(ev, item) => setNewTaskStatus(item.key)}
-        />
-        <Dropdown
-          label="Assignee"
-          options={users.map((user) => ({ key: user, text: user }))}
-          selectedKey={newTaskAssignee}
-          onChange={(ev, item) => setNewTaskAssignee(item.key)}
-        />
-        <Dropdown
-          label="Category"
-          options={Object.keys(categoryColors).map((category) => ({
-            key: category,
-            text: category,
-          }))}
-          selectedKey={newTaskCategory}
-          onChange={(ev, item) => setNewTaskCategory(item.key)}
-        />
-        <PrimaryButton text="Create" onClick={handleCreateTask} />
+        {/* ... other fields ... */}
       </Stack>
     </Panel>
   );

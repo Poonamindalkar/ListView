@@ -111,3 +111,9 @@ button:focus-visible {
 .dropdown-item:hover .nested-dropdown {
   display: block;
 }
+.right-side-panel {
+  position: fixed; /* Ensure the panel is positioned relative to the viewport */
+  top: 50%;      /* Center vertically */
+  right: 0;      /* Position on the right edge */
+  transform: translateY(-50%); /* Adjust vertical position for perfect centering */
+}
