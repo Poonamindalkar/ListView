@@ -52,7 +52,10 @@ const styles = mergeStyleSets({
   },
   deleteButton: {
     marginLeft: "auto",
-    color: "red", // Set delete button color to red
+    color: "red",
+  },
+  checkedTaskTitle: {
+    textDecoration: "line-through",
   },
 });
 
@@ -71,6 +74,7 @@ const categoryColors = {
 
 const TaskItem = ({ task, handleDeleteTask, handleStatusChange }) => {
   const [isEditingStatus, setIsEditingStatus] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleEditStatusClick = (e) => {
     e.stopPropagation();
@@ -86,6 +90,10 @@ const TaskItem = ({ task, handleDeleteTask, handleStatusChange }) => {
     if (!event.target.closest(".statusContainer")) {
       setIsEditingStatus(false);
     }
+  };
+
+  const handleCheckboxChange = (ev, checked) => {
+    setIsChecked(checked);
   };
 
   React.useEffect(() => {
@@ -105,8 +113,8 @@ const TaskItem = ({ task, handleDeleteTask, handleStatusChange }) => {
 
   return (
     <div className={styles.taskItem}>
-      <Checkbox />
-      <Text className={styles.taskTitle}>{task.title}</Text>
+      <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
+      <Text className={`${styles.taskTitle} ${isChecked ? styles.checkedTaskTitle : ""}`}>{task.title}</Text>
 
       <div className={`statusContainer ${styles.statusContainer}`}>
         {isEditingStatus ? (
