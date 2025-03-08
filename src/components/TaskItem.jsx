@@ -1,4 +1,3 @@
-// components/TaskItem.js
 import React, { useState } from "react";
 import {
   Checkbox,
@@ -14,20 +13,30 @@ initializeIcons();
 
 const styles = mergeStyleSets({
   taskItem: {
-    display: "flex",
+    display: "grid",
+    gridTemplateColumns: "40px 1fr 150px 150px 150px auto",
     alignItems: "center",
     padding: "8px 16px",
     borderBottom: "1px solid #eee",
     gap: "12px",
+
+
+
+
+
   },
+  
   taskTitle: {
     flexGrow: 1,
+    textAlign: "left",
+    alignSelf: "start",
   },
   statusContainer: {
     display: "flex",
     alignItems: "center",
     gap: "6px",
-    minWidth: "140px",
+    justifyContent: "left",
+    paddingLeft: "20px",
   },
   statusLabel: {
     borderRadius: "4px",
@@ -44,15 +53,23 @@ const styles = mergeStyleSets({
   },
   assigneeLabel: {
     marginRight: "8px",
+    textAlign: "right",
+    alignSelf: "start",
+    paddingLeft: "20px", 
+
+
   },
   categoryLabel: {
     padding: "4px 8px",
     borderRadius: "4px",
     marginRight: "8px",
+    textAlign: "left",
+    alignSelf: "start",
   },
   deleteButton: {
-    marginLeft: "auto",
     color: "red",
+    alignSelf: "start",
+    justifySelf: "end",
   },
   checkedTaskTitle: {
     textDecoration: "line-through",
@@ -114,7 +131,9 @@ const TaskItem = ({ task, handleDeleteTask, handleStatusChange }) => {
   return (
     <div className={styles.taskItem}>
       <Checkbox checked={isChecked} onChange={handleCheckboxChange} />
-      <Text className={`${styles.taskTitle} ${isChecked ? styles.checkedTaskTitle : ""}`}>{task.title}</Text>
+      <Text className={`${styles.taskTitle} ${isChecked ? styles.checkedTaskTitle : ""}`}>
+        {task.title}
+      </Text>
 
       <div className={`statusContainer ${styles.statusContainer}`}>
         {isEditingStatus ? (
