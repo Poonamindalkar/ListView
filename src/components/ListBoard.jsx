@@ -71,13 +71,26 @@ const ListBoard = () => {
 
   // Apply Filtering
   const filteredTasks = tasks.filter((task) => {
-    if (!activeFilter) return true;
-    return task.status === activeFilter || task.assignee === activeFilter || task.category === activeFilter;
+    const searchTermLower = searchTerm.toLowerCase();
+    if (activeFilter) {
+      return (
+        (task.status === activeFilter || task.assignee === activeFilter || task.category === activeFilter) &&
+        (task.title.toLowerCase().includes(searchTermLower) ||
+          task.assignee.toLowerCase().includes(searchTermLower) ||
+          task.category.toLowerCase().includes(searchTermLower))
+      );
+    } else {
+      return (
+        task.title.toLowerCase().includes(searchTermLower) ||
+        task.assignee.toLowerCase().includes(searchTermLower) ||
+        task.category.toLowerCase().includes(searchTermLower)
+      );
+    }
   });
 
   // Group by Sprint
   const groupedBySprint = filteredTasks.reduce((acc, task) => {
-    acc[task.sprint] = acc[task.sprint] || [];
+    acc[task.sprint] = acc[task.sprint] || []; // Corrected line
     acc[task.sprint].push(task);
     return acc;
   }, {});
