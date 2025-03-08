@@ -1,3 +1,4 @@
+// components/TaskItem.js
 import React, { useState } from "react";
 import {
   Checkbox,
@@ -9,7 +10,7 @@ import {
 import { initializeIcons } from "@fluentui/react/lib/Icons";
 import { mergeStyleSets } from "@fluentui/react/lib/Styling";
 
-initializeIcons(); // Ensure Fluent UI icons are available
+initializeIcons();
 
 const styles = mergeStyleSets({
   taskItem: {
@@ -51,6 +52,7 @@ const styles = mergeStyleSets({
   },
   deleteButton: {
     marginLeft: "auto",
+    color: "red", // Set delete button color to red
   },
 });
 
@@ -71,7 +73,7 @@ const TaskItem = ({ task, handleDeleteTask, handleStatusChange }) => {
   const [isEditingStatus, setIsEditingStatus] = useState(false);
 
   const handleEditStatusClick = (e) => {
-    e.stopPropagation(); // Prevent event bubbling
+    e.stopPropagation();
     setIsEditingStatus(true);
   };
 
@@ -106,7 +108,6 @@ const TaskItem = ({ task, handleDeleteTask, handleStatusChange }) => {
       <Checkbox />
       <Text className={styles.taskTitle}>{task.title}</Text>
 
-      {/* Status Label with Edit Button */}
       <div className={`statusContainer ${styles.statusContainer}`}>
         {isEditingStatus ? (
           <Dropdown

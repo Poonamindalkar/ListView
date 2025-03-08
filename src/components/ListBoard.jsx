@@ -1,7 +1,9 @@
+// components/ListBoard.js
 import React, { useState } from "react";
 import SearchAndGroup from "./SearchAndGroup";
 import TaskList from "./TaskList";
 import TableHeader from "./TableHeader";
+import TaskPanel from "./TaskPanel";
 
 const ListBoard = () => {
   const [tasks, setTasks] = useState([
@@ -15,6 +17,12 @@ const ListBoard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [newUser, setNewUser] = useState("");
   const [activeFilter, setActiveFilter] = useState(null);
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [newTaskTitle, setNewTaskTitle] = useState("");
+  const [newTaskStatus, setNewTaskStatus] = useState("To Do");
+  const [newTaskAssignee, setNewTaskAssignee] = useState(users[0] || "");
+  const [newTaskCategory, setNewTaskCategory] = useState("Research");
+  const [addTaskSprint, setAddTaskSprint] = useState("Default Sprint");
 
   const handleSearchChange = (event, newValue) => setSearchTerm(newValue);
   const handleGroupByChange = (filter) => setActiveFilter(filter);
@@ -25,6 +33,40 @@ const ListBoard = () => {
       setUsers([...users, newUser.trim()]);
       setNewUser("");
     }
+  };
+
+  const handleAddTaskClick = (sprint) => {
+    setAddTaskSprint(sprint);
+    setIsPanelOpen(true);
+  };
+
+  const handlePanelDismiss = () => {
+    setIsPanelOpen(false);
+    setNewTaskTitle("");
+    setNewTaskStatus("To Do");
+    setNewTaskAssignee(users[0] || "");
+    setNewTaskCategory("Research");
+  };
+
+  const handleCreateTask = () => {
+    const newTask = {
+      id: tasks.length + 1,
+      sprint: addTaskSprint,
+      title: newTaskTitle,
+      status: newTaskStatus,
+      assignee: newTaskAssignee,
+      category: newTaskCategory,
+    };
+    setTasks([...tasks, newTask]);
+    handlePanelDismiss();
+  };
+
+  const handleDeleteTask = (taskId) => {
+    setTasks(tasks.filter((task) => task.id !== taskId));
+  };
+
+  const handleStatusChange = (taskId, newStatus) => {
+    setTasks(tasks.map(task => task.id === taskId ? { ...task, status: newStatus } : task));
   };
 
   // Apply Filtering
@@ -59,10 +101,30 @@ const ListBoard = () => {
       {Object.entries(groupedBySprint).map(([sprint, taskList]) => (
         <div key={sprint} style={{ marginBottom: "20px" }}>
           <h2>{sprint}</h2>
-          <TableHeader /> {/* Table headers */}
-          <TaskList group={sprint} taskList={taskList} />
+          <TableHeader />
+          <TaskList
+            group={sprint}
+            taskList={taskList}
+            handleAddTaskClick={handleAddTaskClick}
+            handleDeleteTask={handleDeleteTask}
+            handleStatusChange={handleStatusChange}
+          />
         </div>
       ))}
+      <TaskPanel
+        isPanelOpen={isPanelOpen}
+        handlePanelDismiss={handlePanelDismiss}
+        newTaskTitle={newTaskTitle}
+        setNewTaskTitle={setNewTaskTitle}
+        newTaskStatus={newTaskStatus}
+        setNewTaskStatus={setNewTaskStatus}
+        newTaskAssignee={newTaskAssignee}
+        setNewTaskAssignee={setNewTaskAssignee}
+        newTaskCategory={newTaskCategory}
+        setNewTaskCategory={setNewTaskCategory}
+        handleCreateTask={handleCreateTask}
+        users={users}
+      />
     </div>
   );
 };
